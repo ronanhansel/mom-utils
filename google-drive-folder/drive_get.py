@@ -6,27 +6,44 @@ API_NAME = 'drive'
 API_VERSION = 'v3'
 CLIENT_SECRET = 'credentials.json'
 SCOPES = ['https://www.googleapis.com/auth/drive']
-DEFAULT_ID = '1j661e37k-WxCqzHojWVz9cZjOpE51a47'
+DEFAULT_ID = input("Please input your folder ID, it's the sequence of gibberish at the end of your folder's url:\n")
 service = create_service(CLIENT_SECRET, API_NAME, API_VERSION, SCOPES)
 
 
 def create(folder):
     folders = folder.split("/")
     folder_id = ''
+    second_id = ''
     default_id = DEFAULT_ID
     for i in folders:
         if folder_id == '':
             folder_id = default_id
-        if i[0] == '&':
-            a = i[1:].split("|")
+        if "|" in i:
+            a = i.split("|")
             for e in a:
-                file_metadata = {
-                    'name': e,
-                    'mimeType': 'application/vnd.google-apps.folder',
-                    'parents': [folder_id]
-                }
-                service.files().create(body=file_metadata,
-                                       supportsAllDrives=True, fields='id').execute()
+                if ">" in e:
+                    if second_id == '': second_id = folder_id
+                    c = e.split(">")
+                    for m in c:
+                        file_metadata = {
+                                'name': m,
+                                'mimeType': 'application/vnd.google-apps.folder',
+                                'parents': [second_id]
+                            }
+                        file_second = service.files().create(body=file_metadata,
+                                            supportsAllDrives=True, fields='id').execute()
+                        second_id = file_second.get('id')
+                        if m == c[-1]: second_id = folder_id
+                else: 
+                    file_metadata = {
+                                    'name': e,
+                                    'mimeType': 'application/vnd.google-apps.folder',
+                                    'parents': [folder_id]
+                                }
+                    file_second = service.files().create(body=file_metadata,
+                                        supportsAllDrives=True, fields='id').execute()
+                    second_id = file_second.get('id')
+
             return
         else:
             file_metadata = {
