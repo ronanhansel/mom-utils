@@ -12,10 +12,12 @@ Also when you run `main.py` for the first time, a new file named token.pickle wi
 
 #Usage
 Use it as if you're accessing paths in Unix (with /),
-To indicate that the following is creating into the same folder aka have the same level,
-seperate those folders with `|`
+To indicate that the following is creating into the same folder aka have the same level, seperate those folders with `|`
+
 for child within child of the same folder, use `>`
+
 don't use `/` after using `>` please, that's enough for me
+
 eg: `documents/child1/child2>child3>child4|child2>child3>child4`
 output:
 ```
