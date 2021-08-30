@@ -1,4 +1,4 @@
-#Adding folders to google drive with ease
+# Add folders to google drive with ease
 
 Aight folks, this requires a bit more of coding (not really, just configuring)
 
